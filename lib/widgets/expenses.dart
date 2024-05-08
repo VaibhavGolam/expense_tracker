@@ -1,5 +1,6 @@
 import 'package:expense_tracker/widgets/expenses_list/expenses_list.dart';
 import 'package:expense_tracker/models/expense.dart';
+import 'package:expense_tracker/widgets/new_expense.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -46,8 +47,8 @@ class _ExpensesState extends State<Expenses> {
   void _openExpenseAddOverlay() {
     showModalBottomSheet(
         context: context,
-        builder: (BuildContext) {
-          return Text('data');
+        builder: (ctx) {
+          return NewExpense();
         });
   }
 
