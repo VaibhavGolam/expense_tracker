@@ -2,34 +2,9 @@ import 'package:expense_tracker/models/expense.dart';
 import 'package:flutter/material.dart';
 
 class ExpenseItem extends StatelessWidget {
-  const ExpenseItem({
-    super.key,
-    required this.containerTitle,
-    required this.containerAmount,
-    required this.containerTime,
-    required this.containerCategory,
-  });
+  const ExpenseItem(this.expense, {super.key});
 
-  final String containerTitle;
-  final double containerAmount;
-  final DateTime containerTime;
-  final Category containerCategory;
-
-//icon Changer
-  IconData getIconForCategory(Category containerCategory) {
-    switch (containerCategory) {
-      case Category.travel:
-        return Icons.flight;
-      case Category.food:
-        return Icons.restaurant;
-      case Category.leisure:
-        return Icons.beach_access;
-      case Category.work:
-        return Icons.work;
-      default:
-        return Icons.error;
-    }
-  }
+  final Expense expense;
 
   @override
   Widget build(BuildContext context) {
@@ -49,24 +24,28 @@ class ExpenseItem extends StatelessWidget {
           children: [
             //item name
             Text(
-              containerTitle,
+              expense.title,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                //cost
-                Text(containerAmount.toString()),
+                //amount
+                Text('₹ ${expense.amount.toStringAsFixed(2)}'),
 
-                //date of purchase
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Icon(getIconForCategory(containerCategory)),
+                    //icon
+                    Icon(categoryIcon[expense.category]),
+
+                    //gap between
                     const SizedBox(
                       width: 10,
                     ),
-                    Text(containerTime.toString())
+
+                    //date
+                    Text(expense.formatedDate)
                   ],
                 )
               ],
