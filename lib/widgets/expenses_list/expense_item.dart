@@ -1,8 +1,8 @@
 import 'package:expense_tracker/models/expense.dart';
 import 'package:flutter/material.dart';
 
-class ExpenseContainer extends StatelessWidget {
-  const ExpenseContainer({
+class ExpenseItem extends StatelessWidget {
+  const ExpenseItem({
     super.key,
     required this.containerTitle,
     required this.containerAmount,
