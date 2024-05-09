@@ -3,23 +3,6 @@ import 'package:expense_tracker/models/expense.dart';
 import 'package:expense_tracker/widgets/new_expense.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 7, 29, 77)),
-        useMaterial3: true,
-      ),
-      home: const Expenses(),
-    );
-  }
-}
-
 class Expenses extends StatefulWidget {
   const Expenses({super.key});
 
@@ -43,8 +26,10 @@ class _ExpensesState extends State<Expenses> {
     )
   ];
 
+  //opens the expense add form
   void _openExpenseAddOverlay() {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (ctx) {
         return NewExpense(
@@ -54,15 +39,64 @@ class _ExpensesState extends State<Expenses> {
     );
   }
 
+  //add
   void _addExpense(Expense expense) {
     setState(() {
       _registeredExpenses.add(expense);
-      Navigator.pop(context);
     });
+  }
+
+  //remove
+  void _removeExpense(Expense expense) {
+    final expenseIndex = _registeredExpenses.indexOf(expense);
+    setState(() {
+      _registeredExpenses.remove(expense);
+    });
+
+    //user can undo acceidently deleted expense
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Expense deleted'),
+        duration: const Duration(seconds: 2),
+        action: SnackBarAction(
+            label: 'Undo',
+            onPressed: () {
+              setState(() {
+                _registeredExpenses.insert(expenseIndex, expense);
+              });
+            }),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget mainContent = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset(
+          'assets/img/add_notes.png',
+          width: 200,
+          height: 200,
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        const Text(
+          'No expenses, Add one',
+          style: TextStyle(fontSize: 15),
+        )
+      ],
+    );
+
+    if (_registeredExpenses.isNotEmpty) {
+      mainContent = ExpensesList(
+        expenses: _registeredExpenses,
+        onRemoveExpense: _removeExpense,
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 17, 25, 110),
@@ -121,11 +155,7 @@ class _ExpensesState extends State<Expenses> {
           ),
 
           //the list of expenses
-          Expanded(
-            child: ExpensesList(
-              expenses: _registeredExpenses,
-            ),
-          ),
+          Expanded(child: mainContent),
         ],
       ),
 
