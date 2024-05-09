@@ -1,9 +1,11 @@
-import 'package:flutter/cupertino.dart';
+import 'package:expense_tracker/models/expense.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
+  const NewExpense({super.key, required this.onAddExpense});
+
+  final void Function(Expense expense) onAddExpense;
 
   @override
   State<NewExpense> createState() => _NewExpenseState();
@@ -12,6 +14,10 @@ class NewExpense extends StatefulWidget {
 class _NewExpenseState extends State<NewExpense> {
   final _titleCntroller = TextEditingController();
   final _amountCntroller = TextEditingController();
+  DateTime? _selectedDate;
+  Category? _selectedCategory = Category.leisure;
+
+  final formatter = DateFormat.yMd();
 
   @override
   void dispose() {
@@ -21,7 +27,56 @@ class _NewExpenseState extends State<NewExpense> {
   }
 
 //date picker dialog
-  void _showDatePickerDialog() {}
+  void _showDatePickerDialog() async {
+    final now = DateTime.now();
+    final firstDate = DateTime(now.year - 1, now.month, now.day);
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: now,
+      firstDate: firstDate,
+      lastDate: now,
+    );
+
+    setState(() {
+      _selectedDate = pickedDate;
+    });
+  }
+
+  //form validation
+  void _submitExpenseData() {
+    final enteredAmount = double.tryParse(_amountCntroller.text);
+    final amountIsInvalid = enteredAmount == null || enteredAmount <= 0;
+    if (_titleCntroller.text.trim().isEmpty ||
+        amountIsInvalid ||
+        _selectedDate == null) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Add all fields'),
+          content: const Text(
+            'Please make sure valid Title, Amount, Date and Cateogry was entered',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+              child: const Text('Okay'),
+            )
+          ],
+        ),
+      );
+      return;
+    }
+
+    widget.onAddExpense(
+      Expense(
+          title: _titleCntroller.text,
+          amount: enteredAmount,
+          date: _selectedDate!,
+          category: _selectedCategory!),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +121,9 @@ class _NewExpenseState extends State<NewExpense> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      'Select date',
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                    ),
+                    Text(_selectedDate == null
+                        ? 'Select date'
+                        : formatter.format(_selectedDate!)),
                     IconButton(
                       onPressed: _showDatePickerDialog,
                       icon: const Icon(
@@ -83,18 +137,47 @@ class _NewExpenseState extends State<NewExpense> {
             ],
           ),
 
-          //button
+          //gap between
+          const SizedBox(
+            height: 16,
+          ),
+
+          //drop down and button
           Row(
             children: [
+              //drop down list
+              DropdownButton(
+                  value: _selectedCategory,
+                  items: Category.values
+                      .map(
+                        (category) => DropdownMenuItem(
+                          value: category,
+                          child: Text(category.name.toUpperCase()),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    if (value == null) {
+                      return;
+                    }
+                    setState(() {
+                      _selectedCategory = value;
+                    });
+                  }),
+
+              const Spacer(),
+              //cancel btn
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text('cancel'),
+                child: const Text('Cancel'),
               ),
+
+              //
               ElevatedButton(
-                onPressed: () {},
-                child: const Text('button pressed'),
+                onPressed: _submitExpenseData,
+                child: const Text('Add expense'),
               )
             ],
           )

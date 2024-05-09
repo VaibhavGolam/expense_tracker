@@ -1,7 +1,6 @@
 import 'package:expense_tracker/widgets/expenses_list/expenses_list.dart';
 import 'package:expense_tracker/models/expense.dart';
 import 'package:expense_tracker/widgets/new_expense.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -46,10 +45,20 @@ class _ExpensesState extends State<Expenses> {
 
   void _openExpenseAddOverlay() {
     showModalBottomSheet(
-        context: context,
-        builder: (ctx) {
-          return NewExpense();
-        });
+      context: context,
+      builder: (ctx) {
+        return NewExpense(
+          onAddExpense: _addExpense,
+        );
+      },
+    );
+  }
+
+  void _addExpense(Expense expense) {
+    setState(() {
+      _registeredExpenses.add(expense);
+      Navigator.pop(context);
+    });
   }
 
   @override
@@ -58,15 +67,9 @@ class _ExpensesState extends State<Expenses> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 17, 25, 110),
         title: const Text(
-          'Flutter Expense Tracker',
+          'Expense Tracker',
           style: TextStyle(color: Colors.white),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.add),
-          )
-        ],
       ),
       body: Column(
         children: [
