@@ -6,8 +6,6 @@ void main() {
     MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 7, 29, 77)),
         useMaterial3: true,
       ),
       home: const Expenses(),
