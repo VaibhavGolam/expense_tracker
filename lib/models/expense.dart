@@ -28,6 +28,7 @@ class Expense {
   final DateTime date;
   final Category category;
 
+  //date formate
   String get formatedDate {
     return formatter.format(date);
   }
@@ -39,6 +40,21 @@ class ExpenseBucket {
     required this.expenses,
   });
 
+  //filter
+  ExpenseBucket.forCategory(List<Expense> allExpense, this.category)
+      : expenses = allExpense
+            .where((expense) => expense.category == category)
+            .toList();
+
   final Category category;
   final List<Expense> expenses;
+
+  //total
+  double get totalExpenses {
+    double sum = 0;
+    for (final expense in expenses) {
+      sum += expense.amount;
+    }
+    return sum;
+  }
 }
