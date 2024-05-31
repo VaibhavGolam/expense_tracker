@@ -33,7 +33,7 @@ class ExpenseItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     //icon
-                    Icon(categoryIcon[expense.category]),
+                    Icon(categoryIcons[expense.category]),
 
                     //gap between
                     const SizedBox(

@@ -2,6 +2,7 @@ import 'package:expense_tracker/widgets/expenses_list/expenses_list.dart';
 import 'package:expense_tracker/models/expense.dart';
 import 'package:expense_tracker/widgets/new_expense.dart';
 import 'package:flutter/material.dart';
+import 'package:expense_tracker/widgets/chart/chart.dart';
 
 class Expenses extends StatefulWidget {
   const Expenses({super.key});
@@ -110,48 +111,7 @@ class _ExpensesState extends State<Expenses> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child:
-                //the chart
-                Container(
-              padding: const EdgeInsets.all(15),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 192, 188, 222),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      Icon(
-                        Icons.food_bank_outlined,
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Icon(
-                        Icons.movie_creation_outlined,
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Icon(
-                        Icons.flight_takeoff_outlined,
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Icon(
-                        Icons.shopping_bag_outlined,
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
+                Chart(expenses: _registeredExpenses)
           ),
 
           //the list of expenses
