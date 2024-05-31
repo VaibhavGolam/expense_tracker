@@ -73,22 +73,26 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
-    Widget mainContent = Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Image.asset(
-          'assets/img/add_notes.png',
-          width: 200,
-          height: 200,
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        const Text(
-          'No expenses, Add one',
-          style: TextStyle(fontSize: 15),
-        )
-      ],
+    print(MediaQuery.of(context).size.width);
+    Widget mainContent = Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/img/add_notes.png',
+            width: 200,
+            height: 200,
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const Text(
+            'No expenses',
+            style: TextStyle(fontSize: 15),
+          )
+        ],
+      ),
     );
 
     if (_registeredExpenses.isNotEmpty) {
@@ -108,18 +112,19 @@ class _ExpensesState extends State<Expenses> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child:
-                Chart(expenses: _registeredExpenses)
-          ),
+          //chart
+          if (_registeredExpenses.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Chart(expenses: _registeredExpenses),
+            ),
 
           //the list of expenses
           Expanded(child: mainContent),
         ],
       ),
 
-      //todo
+      //add expense button
       floatingActionButton: FloatingActionButton(
         onPressed: _openExpenseAddOverlay,
         tooltip: 'Increment',

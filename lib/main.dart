@@ -1,5 +1,6 @@
 import 'package:expense_tracker/widgets/expenses.dart';
 import 'package:flutter/material.dart';
+//import 'package:flutter/services.dart';
 
 var kColorScheme = ColorScheme.fromSeed(
   seedColor: Colors.blue,
@@ -11,72 +12,79 @@ var kDarkColorScheme = ColorScheme.fromSeed(
 );
 
 void main() {
-  runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations(
+  //   [
+  //     DeviceOrientation.portraitUp,
+  //   ],
+  // ).then((fn) {
+    runApp(
+      MaterialApp(
+        debugShowCheckedModeBanner: false,
 
-      //-darkmode-//
-      darkTheme: ThemeData.dark().copyWith(
-        colorScheme: kDarkColorScheme,
+        //-darkmode-//
+        darkTheme: ThemeData.dark().copyWith(
+          colorScheme: kDarkColorScheme,
 
-        //card properties
-        cardTheme: const CardTheme().copyWith(
-          color: kDarkColorScheme.secondaryContainer,
-          margin: const EdgeInsets.symmetric(
-            horizontal: 14,
-            vertical: 7,
-          ),
-          elevation: 4,
-        ),
-
-        //add button properties
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: kDarkColorScheme.primaryContainer,
-            foregroundColor: kDarkColorScheme.onPrimaryContainer,
-          ),
-        ),
-      ),
-
-      //-light mode-//
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: kColorScheme,
-        appBarTheme: const AppBarTheme().copyWith(
-          backgroundColor: kColorScheme.onPrimaryContainer,
-          foregroundColor: kColorScheme.primaryContainer,
-        ),
-
-        //card properties
-        cardTheme: const CardTheme().copyWith(
-          color: kColorScheme.secondaryContainer,
-          margin: const EdgeInsets.symmetric(
-            horizontal: 14,
-            vertical: 7,
-          ),
-        ),
-
-        //font properties
-        textTheme: ThemeData().textTheme.copyWith(
-              titleLarge: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: kColorScheme.onSecondaryContainer,
-                fontSize: 20,
-              ),
-              bodyMedium: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: kColorScheme.onSecondaryContainer,
-              ),
+          //card properties
+          cardTheme: const CardTheme().copyWith(
+            color: kDarkColorScheme.secondaryContainer,
+            margin: const EdgeInsets.symmetric(
+              horizontal: 14,
+              vertical: 7,
             ),
+            elevation: 4,
+          ),
 
-        //add button properties
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: kColorScheme.primaryContainer,
+          //add button properties
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: kDarkColorScheme.primaryContainer,
+              foregroundColor: kDarkColorScheme.onPrimaryContainer,
+            ),
           ),
         ),
+
+        //-light mode-//
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: kColorScheme,
+          appBarTheme: const AppBarTheme().copyWith(
+            backgroundColor: kColorScheme.onPrimaryContainer,
+            foregroundColor: kColorScheme.primaryContainer,
+          ),
+
+          //card properties
+          cardTheme: const CardTheme().copyWith(
+            color: kColorScheme.secondaryContainer,
+            margin: const EdgeInsets.symmetric(
+              horizontal: 14,
+              vertical: 7,
+            ),
+          ),
+
+          //font properties
+          textTheme: ThemeData().textTheme.copyWith(
+                titleLarge: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: kColorScheme.onSecondaryContainer,
+                  fontSize: 20,
+                ),
+                bodyMedium: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: kColorScheme.onSecondaryContainer,
+                ),
+              ),
+
+          //add button properties
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: kColorScheme.primaryContainer,
+            ),
+          ),
+        ),
+        home: const Expenses(),
       ),
-      home: const Expenses(),
-    ),
-  );
+    );
+ // });
 }
