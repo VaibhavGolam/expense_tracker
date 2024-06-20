@@ -73,7 +73,10 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    print('----width----');
     print(MediaQuery.of(context).size.width);
+    print(MediaQuery.of(context).size.height);
+
     Widget mainContent = Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
