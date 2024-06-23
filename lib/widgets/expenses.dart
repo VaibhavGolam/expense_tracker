@@ -30,6 +30,7 @@ class _ExpensesState extends State<Expenses> {
   //opens the expense add form
   void _openExpenseAddOverlay() {
     showModalBottomSheet(
+      useSafeArea: true,
       isScrollControlled: true,
       context: context,
       builder: (ctx) {
@@ -73,9 +74,8 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
-    print('----width----');
-    print(MediaQuery.of(context).size.width);
-    print(MediaQuery.of(context).size.height);
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
 
     Widget mainContent = Center(
       child: Column(
@@ -113,19 +113,35 @@ class _ExpensesState extends State<Expenses> {
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body: Column(
-        children: [
-          //chart
-          if (_registeredExpenses.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Chart(expenses: _registeredExpenses),
-            ),
+      body: width < 600
+          ? Column(
+              children: [
+                //chart
+                if (_registeredExpenses.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Chart(expenses: _registeredExpenses),
+                  ),
 
-          //the list of expenses
-          Expanded(child: mainContent),
-        ],
-      ),
+                //the list of expenses
+                Expanded(child: mainContent),
+              ],
+            )
+          : Row(
+              children: [
+                //chart
+                if (_registeredExpenses.isNotEmpty)
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Chart(expenses: _registeredExpenses),
+                    ),
+                  ),
+
+                //the list of expenses
+                Expanded(child: mainContent),
+              ],
+            ),
 
       //add expense button
       floatingActionButton: FloatingActionButton(
